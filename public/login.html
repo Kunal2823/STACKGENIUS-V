@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StackGenius — Welcome</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #07080b;
+      --surface:      #0e0f14;
+      --surface2:     #13141a;
+      --border:       rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.13);
+      --text:         #efefef;
+      --muted:        #4a4a52;
+      --accent:       #a78bfa;
+      --accent2:      #60a5fa;
+      --accent3:      #34d399;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Cpath d='M3 2 L20 11 L8 20 Z' fill='%23a78bfa' stroke='%235b21b6' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(167,139,250,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(167,139,250,0.022) 1px, transparent 1px);
+      background-size: 72px 72px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(120px); }
+    .orb1 { width: 400px; height: 400px; background: rgba(167,139,250,0.04); top: -100px; right: -80px; }
+    .orb2 { width: 300px; height: 300px; background: rgba(96,165,250,0.03);  bottom: 5%; left: -80px; }
+
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes fadeIn  { from{opacity:0;}to{opacity:1;} }
+    @keyframes pulse2  { 0%,100%{opacity:.3;}50%{opacity:1;} }
+
+    /* ── Card ── */
+    .card-wrap {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 500px;
+      margin: 40px 16px;
+      animation: fadeUp .55s ease both;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      opacity: .55;
+    }
+
+    /* ── Logo ── */
+    .logo-row {
+      display: flex; align-items: center; gap: 9px;
+      margin-bottom: 32px;
+    }
+    .logo-mark {
+      width: 26px; height: 26px; border-radius: 7px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: #07080b;
+      font-family: 'Syne', sans-serif;
+    }
+    .logo-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 15px;
+      letter-spacing: -0.02em; color: var(--text);
+    }
+
+    /* ── Step system ── */
+    .step { display: none; }
+    .step.active { display: block; animation: fadeUp .4s ease both; }
+
+    .step-eyebrow {
+      font-size: 9.5px; color: var(--accent);
+      letter-spacing: .22em; text-transform: uppercase;
+      margin-bottom: 8px; opacity: .75;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .step-eyebrow::before {
+      content: ''; width: 16px; height: 1px;
+      background: var(--accent); opacity: .6;
+    }
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 800; letter-spacing: -0.025em;
+      line-height: 1.1; margin-bottom: 8px;
+    }
+    .step-title em {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic; font-weight: 400;
+      color: var(--accent);
+    }
+    .step-sub {
+      font-size: 11.5px; color: var(--muted);
+      line-height: 1.75; margin-bottom: 28px;
+    }
+
+    /* ── Progress dots ── */
+    .dots {
+      display: flex; gap: 6px;
+      margin-bottom: 28px;
+    }
+    .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--border-hover);
+      transition: all .25s;
+    }
+    .dot.active {
+      background: var(--accent);
+      width: 18px; border-radius: 100px;
+    }
+    .dot.done { background: rgba(167,139,250,.35); }
+
+    /* ── Form inputs ── */
+    .field { margin-bottom: 16px; }
+    .field-label {
+      font-size: 9.5px; color: var(--accent);
+      letter-spacing: .18em; text-transform: uppercase;
+      opacity: .7; margin-bottom: 7px; display: block;
+    }
+    .field input, .field select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%234a4a52' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .field input::placeholder { color: #252530; }
+    .field input:focus, .field select:focus { border-color: rgba(167,139,250,.4); }
+    .field select option { background: #0e0f14; color: var(--text); }
+
+    /* ── Role grid ── */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 24px;
+    }
+    .role-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .role-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .role-card.selected {
+      border-color: rgba(167,139,250,.5);
+      background: rgba(167,139,250,.06);
+    }
+    .role-card.selected::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: var(--accent);
+    }
+    .role-card.selected .role-check { display: flex; }
+    .role-check {
+      display: none;
+      position: absolute; top: 6px; right: 7px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent);
+      align-items: center; justify-content: center;
+      font-size: 8px; color: #07080b; font-weight: 800;
+    }
+    .role-icon { font-size: 22px; margin-bottom: 7px; }
+    .role-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      color: var(--text); line-height: 1.3;
+    }
+
+    /* ── Experience bar ── */
+    .exp-options {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 24px;
+    }
+    .exp-option {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      display: flex; align-items: center; gap: 13px;
+      cursor: pointer;
+      transition: all .18s;
+      position: relative;
+    }
+    .exp-option:hover { border-color: var(--border-hover); }
+    .exp-option.selected {
+      border-color: rgba(167,139,250,.5);
+      background: rgba(167,139,250,.05);
+    }
+    .exp-radio {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 1px solid var(--border-hover);
+      flex-shrink: 0; transition: all .18s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .exp-option.selected .exp-radio {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    .exp-option.selected .exp-radio::after {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #07080b;
+    }
+    .exp-text { flex: 1; }
+    .exp-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 12.5px; font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .exp-desc { font-size: 10.5px; color: var(--muted); }
+
+    /* ── Interest chips ── */
+    .interest-grid {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      margin-bottom: 24px;
+    }
+    .interest-chip {
+      font-size: 11px; font-family: 'DM Mono', monospace;
+      border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 100px;
+      cursor: pointer; transition: all .18s;
+      color: var(--muted); background: none;
+    }
+    .interest-chip:hover { color: var(--text); border-color: var(--border-hover); }
+    .interest-chip.selected {
+      color: var(--accent);
+      border-color: rgba(167,139,250,.45);
+      background: rgba(167,139,250,.07);
+    }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex; gap: 10px; align-items: center;
+      margin-top: 6px;
+    }
+    .btn-next {
+      background: var(--accent); color: #07080b;
+      border: none; border-radius: 9px;
+      padding: 12px 26px;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      cursor: pointer; transition: all .2s;
+      flex: 1;
+    }
+    .btn-next:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(167,139,250,.28); }
+    .btn-next:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; filter: none; }
+    .btn-back {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 9px; padding: 12px 18px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px; letter-spacing: .07em;
+      cursor: pointer; transition: all .15s;
+    }
+    .btn-back:hover { border-color: var(--border-hover); color: var(--text); }
+
+    /* ── Success / summary ── */
+    .summary-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      font-size: 11.5px;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-key { color: var(--muted); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+    .summary-val { color: var(--text); font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 700; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; max-width: 220px; }
+    .tag {
+      font-size: 9.5px; color: var(--accent);
+      border: 1px solid rgba(167,139,250,.3);
+      padding: 3px 9px; border-radius: 100px;
+    }
+
+    /* ── Error ── */
+    .field-error {
+      font-size: 10.5px; color: #f87171;
+      margin-top: 5px; display: none;
+    }
+    .field-error.show { display: block; }
+
+    @media (max-width: 420px) {
+      .card { padding: 28px 20px; }
+      .role-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="card-wrap">
+  <div class="card">
+
+    <div class="logo-row">
+      <div class="logo-mark">S</div>
+      <span class="logo-name">StackGenius</span>
+    </div>
+
+    <!-- Progress dots -->
+    <div class="dots" id="dots">
+      <div class="dot active" id="dot0"></div>
+      <div class="dot"        id="dot1"></div>
+      <div class="dot"        id="dot2"></div>
+      <div class="dot"        id="dot3"></div>
+    </div>
+
+    <!-- ── Step 0: Basic info ── -->
+    <div class="step active" id="step0">
+      <p class="step-eyebrow">Step 1 of 4 · Welcome</p>
+      <h2 class="step-title">Let's get to<br><em>know you.</em></h2>
+      <p class="step-sub">Takes 45 seconds. Helps us tailor your stack recommendations.</p>
+
+      <div class="field">
+        <label class="field-label">Your name</label>
+        <input type="text" id="inputName" placeholder="e.g. Kunal Sharma" autocomplete="name">
+        <div class="field-error" id="errName">Please enter your name.</div>
+      </div>
+      <div class="field">
+        <label class="field-label">Email address</label>
+        <input type="email" id="inputEmail" placeholder="you@example.com" autocomplete="email">
+        <div class="field-error" id="errEmail">Please enter a valid email.</div>
+      </div>
+      <div class="field">
+        <label class="field-label">Country</label>
+        <select id="inputCountry">
+          <option value="">Select country…</option>
+          <option>India</option><option>United States</option><option>United Kingdom</option>
+          <option>Germany</option><option>Canada</option><option>Australia</option>
+          <option>France</option><option>Japan</option><option>Brazil</option>
+          <option>Singapore</option><option>Netherlands</option><option>Other</option>
+        </select>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-next" onclick="goNext(0)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ── Step 1: Role ── -->
+    <div class="step" id="step1">
+      <p class="step-eyebrow">Step 2 of 4 · Role</p>
+      <h2 class="step-title">What do you<br><em>do?</em></h2>
+      <p class="step-sub">Pick the option that best describes you.</p>
+
+      <div class="role-grid" id="roleGrid">
+        <div class="role-card" onclick="selectRole(this,'Student')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">🎓</div>
+          <div class="role-label">Student</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Freelancer')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">💻</div>
+          <div class="role-label">Freelancer</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Indie Hacker')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">🚀</div>
+          <div class="role-label">Indie Hacker</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Startup Founder')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">🏗️</div>
+          <div class="role-label">Startup Founder</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Company Dev')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">🏢</div>
+          <div class="role-label">Company Dev</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Professor / Educator')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">📚</div>
+          <div class="role-label">Professor</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Designer')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">🎨</div>
+          <div class="role-label">Designer</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Product Manager')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">📊</div>
+          <div class="role-label">Product Manager</div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'Other')">
+          <div class="role-check">✓</div>
+          <div class="role-icon">✨</div>
+          <div class="role-label">Other</div>
+        </div>
+      </div>
+      <div class="field-error" id="errRole" style="margin-bottom:12px;">Please select a role.</div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goBack(1)">← Back</button>
+        <button class="btn-next" onclick="goNext(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ── Step 2: Experience ── -->
+    <div class="step" id="step2">
+      <p class="step-eyebrow">Step 3 of 4 · Experience</p>
+      <h2 class="step-title">How much do you<br><em>know?</em></h2>
+      <p class="step-sub">Helps us calibrate how we explain stack choices.</p>
+
+      <div class="exp-options" id="expOptions">
+        <div class="exp-option" onclick="selectExp(this,'Beginner')">
+          <div class="exp-radio"></div>
+          <div class="exp-text">
+            <div class="exp-name">Beginner</div>
+            <div class="exp-desc">Just starting out — less than 1 year coding</div>
+          </div>
+        </div>
+        <div class="exp-option" onclick="selectExp(this,'Intermediate')">
+          <div class="exp-radio"></div>
+          <div class="exp-text">
+            <div class="exp-name">Intermediate</div>
+            <div class="exp-desc">Comfortable building projects — 1 to 3 years</div>
+          </div>
+        </div>
+        <div class="exp-option" onclick="selectExp(this,'Advanced')">
+          <div class="exp-radio"></div>
+          <div class="exp-text">
+            <div class="exp-name">Advanced</div>
+            <div class="exp-desc">Shipped production apps — 3 to 6 years</div>
+          </div>
+        </div>
+        <div class="exp-option" onclick="selectExp(this,'Expert')">
+          <div class="exp-radio"></div>
+          <div class="exp-text">
+            <div class="exp-name">Expert / Senior</div>
+            <div class="exp-desc">Architect-level — 6+ years in the field</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-error" id="errExp" style="margin-bottom:12px;">Please select your experience level.</div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goBack(2)">← Back</button>
+        <button class="btn-next" onclick="goNext(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ── Step 3: Interests ── -->
+    <div class="step" id="step3">
+      <p class="step-eyebrow">Step 4 of 4 · Interests</p>
+      <h2 class="step-title">What are you<br><em>into?</em></h2>
+      <p class="step-sub">Select all that apply — we'll prioritize relevant stacks for you.</p>
+
+      <div class="interest-grid" id="interestGrid">
+        <button class="interest-chip" onclick="toggleInterest(this)">Web Apps</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">Mobile Apps</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">AI / ML</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">SaaS Products</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">E-commerce</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">Real-time / Chat</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">DevTools</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">Games</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">Blockchain</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">Open Source</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">Data / Analytics</button>
+        <button class="interest-chip" onclick="toggleInterest(this)">APIs & Integrations</button>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goBack(3)">← Back</button>
+        <button class="btn-next" onclick="goNext(3)">Let's Go →</button>
+      </div>
+    </div>
+
+    <!-- ── Step 4: Done ── -->
+    <div class="step" id="step4">
+      <p class="step-eyebrow">You're all set ✦</p>
+      <h2 class="step-title">Welcome to<br><em>StackGenius.</em></h2>
+      <p class="step-sub">Here's what we've got on you.</p>
+
+      <div style="margin-bottom:24px;">
+        <div class="summary-row">
+          <span class="summary-key">Name</span>
+          <span class="summary-val" id="sumName">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Role</span>
+          <span class="summary-val" id="sumRole">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Experience</span>
+          <span class="summary-val" id="sumExp">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Interests</span>
+          <div class="tag-row" id="sumInterests"></div>
+        </div>
+      </div>
+
+      <button class="btn-next" onclick="enterApp()" style="width:100%;">
+        Enter StackGenius →
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let profile = { name:'', email:'', country:'', role:'', experience:'', interests:[] };
+  let currentStep = 0;
+
+  // ── Dot state ──
+  function updateDots(step) {
+    for (let i = 0; i < 4; i++) {
+      const d = document.getElementById('dot' + i);
+      d.className = 'dot' + (i === step ? ' active' : i < step ? ' done' : '');
+    }
+  }
+
+  // ── Navigation ──
+  function goNext(from) {
+    if (!validate(from)) return;
+    document.getElementById('step' + from).classList.remove('active');
+    const next = from + 1;
+    document.getElementById('step' + next).classList.add('active');
+    currentStep = next;
+    if (next <= 3) updateDots(next);
+    if (next === 4) buildSummary();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack(from) {
+    document.getElementById('step' + from).classList.remove('active');
+    const prev = from - 1;
+    document.getElementById('step' + prev).classList.add('active');
+    currentStep = prev;
+    updateDots(prev);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Validation ──
+  function validate(step) {
+    if (step === 0) {
+      const name  = document.getElementById('inputName').value.trim();
+      const email = document.getElementById('inputEmail').value.trim();
+      let ok = true;
+      document.getElementById('errName').classList.toggle('show', !name);
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      document.getElementById('errEmail').classList.toggle('show', !emailOk);
+      if (!name || !emailOk) ok = false;
+      if (ok) {
+        profile.name    = name;
+        profile.email   = email;
+        profile.country = document.getElementById('inputCountry').value;
+      }
+      return ok;
+    }
+    if (step === 1) {
+      const ok = !!profile.role;
+      document.getElementById('errRole').classList.toggle('show', !ok);
+      return ok;
+    }
+    if (step === 2) {
+      const ok = !!profile.experience;
+      document.getElementById('errExp').classList.toggle('show', !ok);
+      return ok;
+    }
+    return true; // step 3 interests optional
+  }
+
+  // ── Role select ──
+  function selectRole(el, val) {
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    profile.role = val;
+    document.getElementById('errRole').classList.remove('show');
+  }
+
+  // ── Experience select ──
+  function selectExp(el, val) {
+    document.querySelectorAll('.exp-option').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    profile.experience = val;
+    document.getElementById('errExp').classList.remove('show');
+  }
+
+  // ── Interest toggle ──
+  function toggleInterest(el) {
+    el.classList.toggle('selected');
+    const val = el.textContent;
+    if (el.classList.contains('selected')) {
+      if (!profile.interests.includes(val)) profile.interests.push(val);
+    } else {
+      profile.interests = profile.interests.filter(i => i !== val);
+    }
+  }
+
+  // ── Summary ──
+  function buildSummary() {
+    document.getElementById('sumName').textContent = profile.name;
+    document.getElementById('sumRole').textContent = profile.role || '—';
+    document.getElementById('sumExp').textContent  = profile.experience || '—';
+    const tagRow = document.getElementById('sumInterests');
+    tagRow.innerHTML = profile.interests.length
+      ? profile.interests.map(i => `<span class="tag">${i}</span>`).join('')
+      : '<span style="font-size:11px;color:var(--muted);">None selected</span>';
+  }
+
+  // ── Enter app ──
+  function enterApp() {
+    // Save profile to sessionStorage so the main app can read it
+    sessionStorage.setItem('sg_profile', JSON.stringify(profile));
+    window.location.href = '/';
+  }
+
+  // ── Enter key support ──
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && currentStep < 4) {
+      const step = document.querySelector('.step.active');
+      if (step && !document.activeElement?.matches('select')) goNext(currentStep);
+    }
+  });
+</script>
+</body>
+</html>

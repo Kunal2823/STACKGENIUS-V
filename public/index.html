@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StackGenius — AI Tech Stack Recommender by Kunal Sharma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- ════ NAV ════ -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-mark">S</div>
+    StackGenius
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-home"      onclick="showPage('home')">Home</button>
+    <button class="nav-link"        id="nav-generator" onclick="showPage('generator')">Generator</button>
+    <button class="nav-link"        id="nav-docs"      onclick="showPage('docs')">Tech Docs</button>
+    <button class="nav-link"        id="nav-about"     onclick="showPage('about')">About</button>
+  </div>
+  <button class="btn-primary" onclick="showPage('generator')">Try Now →</button>
+</nav>
+
+<!-- ════ HOME ════ -->
+<div class="page active" id="page-home">
+  <div class="wrapper">
+    <div style="animation:fadeUp .6s ease both;">
+      <p class="eyebrow">AI Software Architect · v2.0 · 2026</p>
+      <h1 class="hero-title">Build smarter.<br>Stack <em>genius.</em></h1>
+      <p class="hero-sub">Describe your project in plain English. Get a production-ready tech stack with detailed reasoning, timeline, cost estimate, and expert suggestions — powered by AI.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('generator')">Generate Your Stack →</button>
+        <button class="btn-outline" onclick="showPage('docs')">Browse Tech Docs</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-big">4+</div><div class="stat-desc">Stack Layers</div></div>
+      <div class="stat-box"><div class="stat-big">AI</div><div class="stat-desc">Powered by Claude</div></div>
+      <div class="stat-box"><div class="stat-big">50+</div><div class="stat-desc">Doc Links</div></div>
+      <div class="stat-box"><div class="stat-big">0s</div><div class="stat-desc">Setup Required</div></div>
+    </div>
+
+    <p class="section-label">How it works</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Describe your idea</div>
+        <div class="step-desc">Type your project concept in plain language — no technical knowledge required.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">AI analyzes it</div>
+        <div class="step-desc">Claude evaluates scale, complexity, team assumptions, and production requirements.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Get your stack</div>
+        <div class="step-desc">Receive frontend, backend, database, hosting + difficulty, cost estimate, and expert tips.</div>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-bottom:14px;">Popular tech docs</p>
+    <div class="docs-grid">
+      <a class="doc-card" href="https://nextjs.org/docs"      target="_blank"><div class="doc-icon">▲</div><div class="doc-name">Next.js</div><div class="doc-type">Frontend</div><div class="doc-arrow">↗</div></a>
+      <a class="doc-card" href="https://react.dev"            target="_blank"><div class="doc-icon">⚛</div><div class="doc-name">React</div><div class="doc-type">UI Library</div><div class="doc-arrow">↗</div></a>
+      <a class="doc-card" href="https://fastapi.tiangolo.com" target="_blank"><div class="doc-icon">⚡</div><div class="doc-name">FastAPI</div><div class="doc-type">Backend</div><div class="doc-arrow">↗</div></a>
+      <a class="doc-card" href="https://supabase.com/docs"    target="_blank"><div class="doc-icon">🟢</div><div class="doc-name">Supabase</div><div class="doc-type">Database</div><div class="doc-arrow">↗</div></a>
+      <a class="doc-card" href="https://vercel.com/docs"      target="_blank"><div class="doc-icon">◆</div><div class="doc-name">Vercel</div><div class="doc-type">Hosting</div><div class="doc-arrow">↗</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- ════ GENERATOR ════ -->
+<div class="page" id="page-generator">
+  <div class="wrapper">
+    <div style="animation:fadeUp .5s ease both; margin-bottom:36px;">
+      <h1 class="gen-title">What are you <em>building?</em></h1>
+      <p class="gen-sub">Describe your project idea below. Press Enter or click Generate Stack.</p>
+    </div>
+
+    <div style="animation:fadeUp .5s .08s ease both;">
+      <p class="input-label">// Your idea</p>
+      <div class="input-box">
+        <textarea id="ideaInput" placeholder="e.g. A social app where pet owners find playdates for their dogs, with location matching, chat, and photo sharing..." rows="4" maxlength="600"></textarea>
+        <div class="input-footer">
+          <div>
+            <div class="chip-row">
+              <button class="chip" onclick="fillExample(this)">Dating app</button>
+              <button class="chip" onclick="fillExample(this)">E-commerce store</button>
+              <button class="chip" onclick="fillExample(this)">SaaS dashboard</button>
+              <button class="chip" onclick="fillExample(this)">Mobile fitness app</button>
+              <button class="chip" onclick="fillExample(this)">Real-time chat</button>
+            </div>
+            <span class="char-count" id="charCount">0 / 600</span>
+          </div>
+          <button class="gen-btn" id="generateBtn" onclick="generate()">Generate Stack →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <div class="loading-area" id="loadingArea">
+      <div class="loader"><span></span><span></span><span></span></div>
+      <p class="loading-text" id="loadingText">Analyzing your project idea...</p>
+      <div class="loading-steps">
+        <div class="loading-step" id="step1"><div class="step-dot"></div>Parsing idea</div>
+        <div class="loading-step" id="step2"><div class="step-dot"></div>Evaluating scale</div>
+        <div class="loading-step" id="step3"><div class="step-dot"></div>Selecting stack</div>
+        <div class="loading-step" id="step4"><div class="step-dot"></div>Writing suggestions</div>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="results-header">
+        <span class="results-title">// Recommended Stack</span>
+        <span class="results-idea" id="resultsIdea"></span>
+      </div>
+      <div class="stack-grid" id="stackGrid"></div>
+      <div class="reason-card" id="reasonCard" style="display:none">
+        <p class="reason-label">Why this stack</p>
+        <p class="reason-text" id="reasonText"></p>
+      </div>
+      <div class="result-stats" id="statsBar" style="display:none">
+        <div class="res-stat"><div class="res-stat-num" id="statDifficulty">—</div><div class="res-stat-label">Difficulty / 10</div></div>
+        <div class="res-stat"><div class="res-stat-num" id="statTimeline">—</div><div class="res-stat-label">Est. Build Time</div></div>
+        <div class="res-stat"><div class="res-stat-num" id="statCost">—</div><div class="res-stat-label">Est. Monthly Cost</div></div>
+      </div>
+      <div class="suggestions-section" id="suggestionsSection" style="display:none">
+        <p class="suggestions-title">Key Suggestions</p>
+        <ul class="suggestion-list" id="suggestionList"></ul>
+      </div>
+      <button class="reset-btn" id="resetBtn" onclick="resetGen()">← Try another idea</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TECH DOCS ════ -->
+<div class="page" id="page-docs">
+  <div class="wrapper">
+    <div style="margin-bottom:28px; animation:fadeUp .5s ease both;">
+      <p class="eyebrow">Official Documentation</p>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,42px);font-weight:800;letter-spacing:-0.02em;margin-bottom:10px;">Every tool,<br>one place.</h2>
+      <p style="font-size:12px;color:var(--muted);line-height:1.75;max-width:440px;">Jump straight to official docs for the most popular technologies in modern stacks.</p>
+    </div>
+
+    <div class="docs-search-wrap">
+      <span class="docs-search-icon">⌕</span>
+      <input type="text" id="docsSearch" placeholder="Search technologies..." oninput="filterDocs(this.value)">
+    </div>
+
+    <div id="docsContent">
+      <div class="docs-category" data-cat="frontend">
+        <div class="docs-cat-label">Frontend</div>
+        <div class="docs-cards">
+          <a class="docs-card" href="https://nextjs.org/docs"               target="_blank"><div class="docs-card-emoji">▲</div><div class="docs-card-name">Next.js</div><div class="docs-card-desc">React framework for production</div></a>
+          <a class="docs-card" href="https://react.dev"                     target="_blank"><div class="docs-card-emoji">⚛</div><div class="docs-card-name">React</div><div class="docs-card-desc">UI component library</div></a>
+          <a class="docs-card" href="https://vuejs.org/guide"               target="_blank"><div class="docs-card-emoji">💚</div><div class="docs-card-name">Vue.js</div><div class="docs-card-desc">Progressive JS framework</div></a>
+          <a class="docs-card" href="https://svelte.dev/docs"               target="_blank"><div class="docs-card-emoji">🔶</div><div class="docs-card-name">Svelte</div><div class="docs-card-desc">Cybernetically enhanced</div></a>
+          <a class="docs-card" href="https://tailwindcss.com/docs"          target="_blank"><div class="docs-card-emoji">🌊</div><div class="docs-card-name">Tailwind CSS</div><div class="docs-card-desc">Utility-first CSS</div></a>
+          <a class="docs-card" href="https://vitejs.dev/guide"              target="_blank"><div class="docs-card-emoji">⚡</div><div class="docs-card-name">Vite</div><div class="docs-card-desc">Next-gen build tool</div></a>
+          <a class="docs-card" href="https://www.typescriptlang.org/docs"   target="_blank"><div class="docs-card-emoji">🔷</div><div class="docs-card-name">TypeScript</div><div class="docs-card-desc">Typed JavaScript</div></a>
+        </div>
+      </div>
+      <div class="docs-category" data-cat="backend">
+        <div class="docs-cat-label">Backend</div>
+        <div class="docs-cards">
+          <a class="docs-card" href="https://nodejs.org/docs"           target="_blank"><div class="docs-card-emoji">🟢</div><div class="docs-card-name">Node.js</div><div class="docs-card-desc">JS runtime environment</div></a>
+          <a class="docs-card" href="https://fastapi.tiangolo.com"      target="_blank"><div class="docs-card-emoji">🐍</div><div class="docs-card-name">FastAPI</div><div class="docs-card-desc">Fast Python API framework</div></a>
+          <a class="docs-card" href="https://expressjs.com"             target="_blank"><div class="docs-card-emoji">🚂</div><div class="docs-card-name">Express.js</div><div class="docs-card-desc">Minimal Node.js framework</div></a>
+          <a class="docs-card" href="https://docs.djangoproject.com"    target="_blank"><div class="docs-card-emoji">🎸</div><div class="docs-card-name">Django</div><div class="docs-card-desc">Python web framework</div></a>
+          <a class="docs-card" href="https://go.dev/doc"                target="_blank"><div class="docs-card-emoji">🐹</div><div class="docs-card-name">Go</div><div class="docs-card-desc">Fast, statically typed</div></a>
+          <a class="docs-card" href="https://nestjs.com"                target="_blank"><div class="docs-card-emoji">🐈</div><div class="docs-card-name">NestJS</div><div class="docs-card-desc">Scalable Node framework</div></a>
+          <a class="docs-card" href="https://hono.dev"                  target="_blank"><div class="docs-card-emoji">🔥</div><div class="docs-card-name">Hono</div><div class="docs-card-desc">Ultrafast web framework</div></a>
+        </div>
+      </div>
+      <div class="docs-category" data-cat="database">
+        <div class="docs-cat-label">Database</div>
+        <div class="docs-cards">
+          <a class="docs-card" href="https://supabase.com/docs"        target="_blank"><div class="docs-card-emoji">⚡</div><div class="docs-card-name">Supabase</div><div class="docs-card-desc">Open-source Firebase alt</div></a>
+          <a class="docs-card" href="https://www.mongodb.com/docs"     target="_blank"><div class="docs-card-emoji">🍃</div><div class="docs-card-name">MongoDB</div><div class="docs-card-desc">NoSQL document database</div></a>
+          <a class="docs-card" href="https://www.postgresql.org/docs"  target="_blank"><div class="docs-card-emoji">🐘</div><div class="docs-card-name">PostgreSQL</div><div class="docs-card-desc">Advanced open-source SQL</div></a>
+          <a class="docs-card" href="https://redis.io/docs"            target="_blank"><div class="docs-card-emoji">🔴</div><div class="docs-card-name">Redis</div><div class="docs-card-desc">In-memory data store</div></a>
+          <a class="docs-card" href="https://firebase.google.com/docs" target="_blank"><div class="docs-card-emoji">🔥</div><div class="docs-card-name">Firebase</div><div class="docs-card-desc">Google's app platform</div></a>
+          <a class="docs-card" href="https://www.prisma.io/docs"       target="_blank"><div class="docs-card-emoji">◭</div><div class="docs-card-name">Prisma</div><div class="docs-card-desc">Next-gen Node.js ORM</div></a>
+          <a class="docs-card" href="https://neon.tech/docs"           target="_blank"><div class="docs-card-emoji">🌿</div><div class="docs-card-name">Neon</div><div class="docs-card-desc">Serverless Postgres</div></a>
+        </div>
+      </div>
+      <div class="docs-category" data-cat="hosting">
+        <div class="docs-cat-label">Hosting & DevOps</div>
+        <div class="docs-cards">
+          <a class="docs-card" href="https://vercel.com/docs"                     target="_blank"><div class="docs-card-emoji">◆</div><div class="docs-card-name">Vercel</div><div class="docs-card-desc">Deploy frontend instantly</div></a>
+          <a class="docs-card" href="https://render.com/docs"                     target="_blank"><div class="docs-card-emoji">🟣</div><div class="docs-card-name">Render</div><div class="docs-card-desc">Cloud hosting platform</div></a>
+          <a class="docs-card" href="https://docs.aws.amazon.com"                 target="_blank"><div class="docs-card-emoji">☁</div><div class="docs-card-name">AWS</div><div class="docs-card-desc">Amazon cloud services</div></a>
+          <a class="docs-card" href="https://cloud.google.com/docs"               target="_blank"><div class="docs-card-emoji">🌐</div><div class="docs-card-name">GCP</div><div class="docs-card-desc">Google cloud platform</div></a>
+          <a class="docs-card" href="https://www.digitalocean.com/docs"           target="_blank"><div class="docs-card-emoji">🌊</div><div class="docs-card-name">DigitalOcean</div><div class="docs-card-desc">Simple cloud hosting</div></a>
+          <a class="docs-card" href="https://docs.docker.com"                     target="_blank"><div class="docs-card-emoji">🐳</div><div class="docs-card-name">Docker</div><div class="docs-card-desc">Containerize anything</div></a>
+          <a class="docs-card" href="https://docs.github.com/en/actions"          target="_blank"><div class="docs-card-emoji">🔄</div><div class="docs-card-name">GitHub Actions</div><div class="docs-card-desc">CI/CD automation</div></a>
+        </div>
+      </div>
+      <div class="docs-category" data-cat="mobile">
+        <div class="docs-cat-label">Mobile</div>
+        <div class="docs-cards">
+          <a class="docs-card" href="https://reactnative.dev/docs"                        target="_blank"><div class="docs-card-emoji">📱</div><div class="docs-card-name">React Native</div><div class="docs-card-desc">Cross-platform mobile</div></a>
+          <a class="docs-card" href="https://docs.expo.dev"                               target="_blank"><div class="docs-card-emoji">📦</div><div class="docs-card-name">Expo</div><div class="docs-card-desc">RN development platform</div></a>
+          <a class="docs-card" href="https://flutter.dev/docs"                            target="_blank"><div class="docs-card-emoji">💙</div><div class="docs-card-name">Flutter</div><div class="docs-card-desc">Google's UI toolkit</div></a>
+          <a class="docs-card" href="https://developer.apple.com/documentation/swiftui"   target="_blank"><div class="docs-card-emoji">🍎</div><div class="docs-card-name">SwiftUI</div><div class="docs-card-desc">Native iOS UI</div></a>
+        </div>
+      </div>
+      <div class="docs-category" data-cat="ai">
+        <div class="docs-cat-label">AI & APIs</div>
+        <div class="docs-cards">
+          <a class="docs-card" href="https://docs.anthropic.com"         target="_blank"><div class="docs-card-emoji">🤖</div><div class="docs-card-name">Anthropic</div><div class="docs-card-desc">Claude API docs</div></a>
+          <a class="docs-card" href="https://platform.openai.com/docs"   target="_blank"><div class="docs-card-emoji">🧠</div><div class="docs-card-name">OpenAI</div><div class="docs-card-desc">GPT & DALL-E API</div></a>
+          <a class="docs-card" href="https://stripe.com/docs"            target="_blank"><div class="docs-card-emoji">💳</div><div class="docs-card-name">Stripe</div><div class="docs-card-desc">Payment processing API</div></a>
+          <a class="docs-card" href="https://clerk.com/docs"             target="_blank"><div class="docs-card-emoji">🔐</div><div class="docs-card-name">Clerk</div><div class="docs-card-desc">Auth & user management</div></a>
+          <a class="docs-card" href="https://aistudio.google.com"        target="_blank"><div class="docs-card-emoji">✨</div><div class="docs-card-name">Gemini API</div><div class="docs-card-desc">Google AI Studio</div></a>
+          <a class="docs-card" href="https://docs.x.ai"                  target="_blank"><div class="docs-card-emoji">𝕏</div><div class="docs-card-name">Grok API</div><div class="docs-card-desc">xAI developer docs</div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ ABOUT ════ -->
+<div class="page" id="page-about">
+  <div class="wrapper">
+    <div style="animation:fadeUp .6s ease both; margin-bottom:48px;">
+      <div class="about-header">
+        <div class="kunal-logo"><span>KS</span></div>
+        <h1 class="about-name">Kunal <span>Sharma</span></h1>
+      </div>
+      <div><p class="about-tag">The Developer Behind This</p></div>
+      <p class="about-bio">Hey — I'm Kunal, a developer passionate about AI, web applications, and tools that make developers' lives easier. StackGenius was born from a simple frustration: choosing the right tech stack is one of the hardest parts of starting a new project. So I built an AI that does it for you.</p>
+      <div class="about-links">
+        <a class="about-link" href="mailto:aykunal06@gmail.com">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 5l7 5 7-5" stroke="currentColor" stroke-width="1.2"/></svg>
+          aykunal06@gmail.com
+        </a>
+        <a class="about-link" href="https://www.linkedin.com/in/kunal-sharma-3a8107318/" target="_blank">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V12M4 4v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7.5 12V9c0-1.5 5-1.5 5 0v3M7.5 6.5V8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          LinkedIn
+        </a>
+        <a class="about-link" href="https://github.com" target="_blank">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 .5a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.22.48-2.69-1.07-2.69-1.07-.36-.92-.88-1.16-.88-1.16-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.21 1.86.86 2.32.66.07-.52.28-.86.5-1.06-1.77-.2-3.63-.89-3.63-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.01.08-2.1 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 0 0 8 .5z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card"><div class="about-card-icon">🧠</div><div class="about-card-title">AI-Powered</div><div class="about-card-text">Uses Claude (Anthropic) to analyze your idea with the reasoning of a senior software architect, not just keyword matching.</div></div>
+      <div class="about-card"><div class="about-card-icon">⚡</div><div class="about-card-title">Instant Results</div><div class="about-card-text">No signup, no waiting. Paste your idea and get a complete recommendation with costs and timelines in seconds.</div></div>
+      <div class="about-card"><div class="about-card-icon">📚</div><div class="about-card-title">Built-in Doc Hub</div><div class="about-card-text">50+ official documentation links organized by category so you can jump straight to any technology in the stack.</div></div>
+      <div class="about-card"><div class="about-card-icon">🎯</div><div class="about-card-title">Context-Aware</div><div class="about-card-text">The AI considers your specific use case — real-time needs, scale, mobile vs web — before recommending anything.</div></div>
+    </div>
+
+    <div style="animation:fadeUp .6s .15s ease both; margin-bottom:44px;">
+      <p class="section-label">Technologies I work with</p>
+      <div class="skills-wrap">
+        <span class="skill-pill">JavaScript</span><span class="skill-pill">TypeScript</span><span class="skill-pill">React</span>
+        <span class="skill-pill">Next.js</span><span class="skill-pill">Node.js</span><span class="skill-pill">Python</span>
+        <span class="skill-pill">FastAPI</span><span class="skill-pill">PostgreSQL</span><span class="skill-pill">MongoDB</span>
+        <span class="skill-pill">Docker</span><span class="skill-pill">Git</span><span class="skill-pill">Tailwind CSS</span>
+        <span class="skill-pill">REST APIs</span><span class="skill-pill">AI / LLMs</span><span class="skill-pill">Vercel</span>
+        <span class="skill-pill">Oracle Cloud</span>
+      </div>
+    </div>
+
+    <div class="contact-box">
+      <p class="contact-label">Get in touch</p>
+      <p class="contact-title">Have a project idea?</p>
+      <p class="contact-text">Always open to interesting projects, collaborations, or just a chat about tech stacks and AI.</p>
+      <a href="mailto:aykunal06@gmail.com" class="contact-btn">Say Hello →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="footer-pulse"></div>
+  <span>Built by <a href="https://www.linkedin.com/in/kunal-sharma-3a8107318/" target="_blank" style="color:var(--accent);text-decoration:none;">Kunal Sharma</a></span>
+  <span class="footer-sep">|</span>
+  <span>StackGenius v2.0</span>
+  <span class="footer-sep">|</span>
+  <span>2026</span>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

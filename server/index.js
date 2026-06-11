@@ -1,7 +1,8 @@
-const express = require('express');
-const cors    = require('cors');
-const path    = require('path');
-const { callGroq } = require('./claude');
+const express   = require('express');
+const cors      = require('cors');
+const path      = require('path');
+const rateLimit = require('express-rate-limit');
+const { callGroq } = require('./groq');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -9,26 +10,26 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve the frontend (public folder)
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// ── Login page ──
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: { error: 'Too many requests. Please wait a minute and try again.' }
+});
+
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
 });
 
-// ── Save user profile ──
-const profiles = new Map();
 app.post('/api/profile', (req, res) => {
   const { name, email, role, experience, interests, country } = req.body;
   if (!name || !email) return res.status(400).json({ error: 'Name and email required.' });
-  profiles.set(email, { name, email, role, experience, interests, country, joinedAt: new Date() });
   console.log(`👤 New user: ${name} | ${role} | ${experience}`);
   res.json({ ok: true });
 });
 
-// ── Stack generation ──
-app.post('/api/generate', async (req, res) => {
+app.post('/api/generate', limiter, async (req, res) => {
   const { idea } = req.body;
 
   if (!idea || typeof idea !== 'string' || idea.trim().length < 5) {
@@ -44,17 +45,13 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-// Catch-all: serve index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
   console.log(`✅ StackGenius running → http://localhost:${PORT}`);
-  console.log(`   Login page: http://localhost:${PORT}/login`);
   if (!process.env.GROQ_API_KEY) {
-    console.warn(`⚠️  WARNING: GROQ_API_KEY is not set! Add it to your .env file.`);
-  } else {
-    console.log(`🔑 GROK_API_KEY loaded (starts with: ${process.env.GROQ_API_KEY.substring(0,8)}...)`);
+    console.warn(`⚠️  GROQ_API_KEY not set — add it to .env`);
   }
 });
